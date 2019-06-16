@@ -17,7 +17,7 @@ def derivateF(A, F, L, dAdt):
 
 
 def derivateOmega(A, E, F, L, Omega, dAdt, dFdt, dLdt):
-    Psi = (3 * Omega**2 + 1)*(1-F) + 2*E(1+Omega)
+    Psi = (3 * Omega**2 + 1)*(1-F) + 2*E*(1+Omega)
     term1_factor1 = 3*(L + 3*(1-F)*dAdt/2)/(A*F) + dFdt - dAdt*Psi
     term1_factor2 = L + 3*(1-F) *dAdt / 2
     term2 = 6*L*dAdt/A
@@ -25,6 +25,12 @@ def derivateOmega(A, E, F, L, Omega, dAdt, dFdt, dLdt):
     term4 = dLdt
     term5 = 3 * (1 - F) * dFdt * Omega
     term6 = F**2 * (Psi - (1 - F)) / A**2
+
+    return term1_factor1 * term1_factor2 + term2 + term3 - term4 - term5 - term6
+
+
+def derivateL():
+    return 1
 
 
 def main():
@@ -35,4 +41,11 @@ def main():
     Omega = 1
     
     dAdt = derivateA(F, Omega)
+    dLdt = derivateL()
+    dFdt = derivateF(A, F, L, dAdt)
+    dOmegadt = derivateOmega(A, E, F, L, Omega, dAdt, dFdt, dLdt)
+
+    print(dAdt, dLdt, dFdt, dOmegadt)
     
+
+main()

@@ -23,7 +23,9 @@ def derivateOmega(t, A, E, F, L, Omega):
     dFdt = derivateF(A, F, L, Omega)
     dLdt = derivateL(t)
     Alpha = 1-F
+    # Here if i change E by L/F final calculations change drastically
     Psi = (3 * Omega**2 + 1)* Alpha+ 2*E*(1+Omega)
+    
      
     common_factor = 2/(3*F*Alpha) 
     term1_factor1 = 3*(L + 3*(Alpha)*dAdt/2)/(A*F) + dFdt - dAdt*Psi
@@ -41,13 +43,15 @@ def derivateOmega(t, A, E, F, L, Omega):
 def derivateL(t):
     L0 = 0.01
     sigma = 1
-    return -L0*t*np.exp(-(t**2)/(2*sigma**2))/(np.sqrt(2*np.pi)*sigma**(5/2))
+    t0 = 10
+    return -L0*(t - t0)*np.exp(-((t - t0)**2)/(2*sigma**2))/(np.sqrt(2*np.pi)*sigma**(5/2))
 
 
 def Gaussian(t):
     L0 = 0.01
     sigma = 1
-    return L0*np.exp(-(t**2)/(2*sigma**2))/(np.sqrt(2*np.pi*sigma))
+    t0 = 10
+    return L0*np.exp(-((t - t0)**2)/(2*sigma**2))/(np.sqrt(2*np.pi*sigma))
 
 
 def main():
@@ -58,10 +62,10 @@ def main():
     # Initialize all variables
     E_0 = 1
     t = np.arange(0, points_number * h, h)
-    A = np.ones(points_number, float) * 5
-    Omega = np.zeros(points_number, float)
+    A = np.ones(points_number, float) * 6.67
+    Omega = np.ones(points_number, float) * -0.17
     E = E_0*(1+Omega)
-    F = np.ones(points_number, float) * 0.6
+    F = np.ones(points_number, float) * 0.7
     L = Gaussian(t)
 
     # loop over all points

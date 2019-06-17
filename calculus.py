@@ -36,42 +36,6 @@ def derivateOmega(t, A, E, F, L, Omega):
     return term1_factor1 * term1_factor2 + term2 + term3 - term4 - term5 - term6
 
 
-def next_A_value(current_A, F, Omega, h = 0.1):
-    k1 = derivateA(F,Omega)
-    k2 = derivateA(F + 0.5 * h,Omega + 0.5 * h * k1)
-    k3 = derivateA(F + 0.5 * h,Omega + 0.5 * h * k2)
-    k4 = derivateA(F + h, Omega + h * k3)
-    nextA = current_A + (k1 + 2*k2 + 2*k3 + k4) * h/6
-	
-    return nextA 
-
-
-def next_F_value(current_F, A, L, dAdt, h = 0.1):
-    k1 = derivateF(A, current_F, L, dAdt)
-    k2 = derivateF(A + 0.5 * h * k1, current_F + 0.5 * h, L + 0.5 * h * k1, dAdt + 0.5 * h * k1)
-    k3 = derivateF(A + 0.5 * h * k2, current_F + 0.5 * h, L + 0.5 * h * k2, dAdt + 0.5 * h * k2)
-    k4 = derivateF(A + h * k3, current_F + h, L + h * k3, dAdt  + h * k3)
-    nextF = current_F + (k1 + 2*k2 + 2*k3 + k4) * h/6
-	
-    return nextF 
-
-
-# def next_Omega_value(A, E, F, L, current_Omega, dAdt, dFdt, dLdt = 0, h = 0.1):
-#     k1 = derivateOmega(A, E, F, L, current_Omega, dAdt, dFdt, dLdt)
-#     k2 = derivateOmega(A + 0.5 * h * k1, E + 0.5 * h * k1, F + 0.5 * h * k1, 
-#         L + 0.5 * h * k1, current_Omega * 0.5 * h, dAdt + 0.5 * h * k1, 
-#         dFdt + 0.5 * h * k1, dLdt + 0.5 * h * k1)
-#     k3 = derivateOmega(A + 0.5 * h * k2, E + 0.5 * h * k2, F + 0.5 * h * k2, 
-#         L + 0.5 * h * k2, current_Omega * 0.5 * h, dAdt + 0.5 * h * k2, 
-#         dFdt + 0.5 * h * k2, dLdt + 0.5 * h * k2)
-#     k4 = derivateOmega(A + h * k3, E + h * k3, F + h * k3, 
-#         L + h * k3, current_Omega * h, dAdt + h * k3, 
-#         dFdt + h * k3, dLdt + h * k3)
-#     nextF = current_Omega + (k1 + 2*k2 + 2*k3 + k4) * h/6
-	
-#     return nextF 
-
-
 def derivateL(t):
     L0 = 0.01
     sigma = 1
@@ -135,10 +99,11 @@ def main():
         E[i+1] = E_0*(1+Omega[i])
         
         print(i)
-
+    M = (1-F)*A/2
 
     plt.plot(t, Omega)
     plt.plot(t, A)
+    plt.plot(t, M)
     plt.show()
     
 

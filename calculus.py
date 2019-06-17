@@ -25,6 +25,7 @@ def derivateOmega(t, A, E, F, L, Omega):
     Alpha = 1-F
     Psi = (3 * Omega**2 + 1)* Alpha+ 2*E*(1+Omega)
      
+    common_factor = 2/(3*F*Alpha) 
     term1_factor1 = 3*(L + 3*(Alpha)*dAdt/2)/(A*F) + dFdt - dAdt*Psi
     term1_factor2 = L + 3*Alpha *dAdt / 2
     term2 = 6*L*dAdt/A
@@ -33,7 +34,8 @@ def derivateOmega(t, A, E, F, L, Omega):
     term5 = 3 * Alpha * dFdt * Omega
     term6 = F**2 * (Psi - Alpha) / A**2
 
-    return term1_factor1 * term1_factor2 + term2 + term3 - term4 - term5 - term6
+    return (term1_factor1 * term1_factor2 + term2 + 
+        term3 - term4 - term5 - term6)*common_factor
 
 
 def derivateL(t):

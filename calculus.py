@@ -17,15 +17,14 @@ def derivateF(A, F, L, Omega):
     return result/A
 
 
-def derivateOmega(t, A, E, F, L, Omega):
+def derivateOmega(t, A, F, L, Omega):
 
-    E = L/F
     dAdt = derivateA(F, Omega)
     dFdt = derivateF(A, F, L, Omega)
     dLdt = derivateL(t)
     Alpha = 1-F
     # Here if i change E by L/F final calculations change drastically
-    Psi = (3 * Omega**2 + 1) * Alpha + 2*E*(1+Omega)
+    Psi = (3 * Omega**2 + 1) * Alpha + 2*L*(1+Omega)/F
 
     common_factor = 2/(3*F*Alpha)
     term1_factor1 = 3*(L + 3*(Alpha)*dAdt/2)/(A*F) + dFdt - dAdt*Psi
@@ -60,12 +59,9 @@ def main():
     h = 0.01  # step size
 
     # Initialize all variables
-    # Although E and E_0 are defined, they aren't currently used
-    E_0 = 10
     t = np.arange(0, points_number * h, h)
     A = np.ones(points_number, float) * 5
     Omega = np.ones(points_number, float) * 0
-    E = E_0*(1+Omega)
     F = np.ones(points_number, float) * 0.6
     L = Gaussian(t)
 
@@ -73,14 +69,14 @@ def main():
     for i in range(points_number - 1):
         kA1 = derivateA(F[i], Omega[i])
         kF1 = derivateF(A[i], F[i], L[i], Omega[i])
-        kO1 = derivateOmega(t[i], A[i], E[i], F[i], L[i], Omega[i])
+        kO1 = derivateOmega(t[i], A[i], F[i], L[i], Omega[i])
         kl1 = derivateL(t[i])
 
         kA2 = derivateA(F[i] + 0.5 * h * kF1, Omega[i] + 0.5 * h * kO1)
         kF2 = derivateF(A[i] + 0.5 * h * kA1, F[i] + 0.5 * h * kF1,
                         L[i] + 0.5 * h * kl1, Omega[i] + 0.5 * h * kO1)
         kO2 = derivateOmega(t[i] + 0.5 * h, A[i] + 0.5 * h * kA1,
-                            E[i], F[i] + 0.5 * h * kF1, L[i] + 0.5 * h * kl1,
+                            F[i] + 0.5 * h * kF1, L[i] + 0.5 * h * kl1,
                             Omega[i] + 0.5 * h * kO1)
         kl2 = derivateL(t[i] + 0.5*h)
 
@@ -88,7 +84,7 @@ def main():
         kF3 = derivateF(A[i] + 0.5 * h * kA2, F[i] + 0.5 * h * kF2,
                         L[i] + 0.5 * h * kl2, Omega[i] + 0.5 * h * kO2)
         kO3 = derivateOmega(t[i] + 0.5 * h, A[i] + 0.5 * h * kA2,
-                            E[i], F[i] + 0.5 * h * kF2, L[i] + 0.5 * h * kl2,
+                            F[i] + 0.5 * h * kF2, L[i] + 0.5 * h * kl2,
                             Omega[i] + 0.5 * h * kO2)
         kl3 = derivateL(t[i] + 0.5*h)
 
@@ -96,14 +92,13 @@ def main():
         kF4 = derivateF(A[i] + h * kA3, F[i] + h * kF3,
                         L[i] + h * kl3, Omega[i] + h * kO3)
         kO4 = derivateOmega(t[i] + h, A[i] + h * kA3,
-                            E[i], F[i] + h * kF3, L[i] + h * kl3,
+                            F[i] + h * kF3, L[i] + h * kl3,
                             Omega[i] + h * kO3)
         kl4 = derivateL(t[i] + h)
 
         A[i+1] = A[i] + (kA1 + 2*kA2 + 2*kA3 + kA4) * h/6
         F[i+1] = F[i] + (kF1 + 2*kF2 + 2*kF3 + kF4) * h/6
         Omega[i+1] = Omega[i] + (kO1 + 2*kO2 + 2*kO3 + kO4) * h/6
-        E[i+1] = E_0*(1+Omega[i])
 
         print(i)
         

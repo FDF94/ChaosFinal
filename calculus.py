@@ -23,7 +23,6 @@ def derivateOmega(t, A, F, L, Omega):
     dFdt = derivateF(A, F, L, Omega)
     dLdt = derivateL(t)
     Alpha = 1-F
-    # Here if i change E by L/F final calculations change drastically
     Psi = (3 * Omega**2 + 1) * Alpha + 2*L*(1+Omega)/F
 
     common_factor = 2/(3*F*Alpha)

@@ -52,17 +52,14 @@ def Gaussian(t):
     return L0*np.exp(-((t - t0)**2)/(2*sigma**2))/(np.sqrt(2*np.pi*sigma))
 
 
-def main():
-    # Initialize hyperparameters
-    points_number = 6000
-    h = 0.01  # step size
-
+def get_results(points_number, h, a0, f0, omega0, t):
     # Initialize all variables
-    t = np.arange(0, points_number * h, h)
-    A = np.ones(points_number, float) * 5
-    Omega = np.ones(points_number, float) * 0
-    F = np.ones(points_number, float) * 0.6
+    A = np.ones_like(t, float) * a0
+    Omega = np.ones_like(t, float) * -0.8
+    F = np.ones_like(t, float) * f0
     L = Gaussian(t)
+
+    #Weird things happen at omega = -0.83; F = 0.1
 
     # loop over all points
     for i in range(points_number - 1):
@@ -98,29 +95,45 @@ def main():
         A[i+1] = A[i] + (kA1 + 2*kA2 + 2*kA3 + kA4) * h/6
         F[i+1] = F[i] + (kF1 + 2*kF2 + 2*kF3 + kF4) * h/6
         Omega[i+1] = Omega[i] + (kO1 + 2*kO2 + 2*kO3 + kO4) * h/6
+    
+    return A, F, L, Omega
 
-        print(i)
-        
-    M = (1-F)*A/2
+def main():
+    # Initialize hyperparameters
+    points_number = 10000
+    h = 0.01  # step size
 
-    fig = plt.figure(figsize=(7, 9))
-    gs = gridspec.GridSpec(nrows=4, ncols=1)
-    ax0 = fig.add_subplot(gs[0, 0])
-    ax0.plot(t, Omega)
-    ax0.set_title(r'$\Omega (t)$')
+    A_initial_values = np.arange(3.5, 7, 0.5)
+    F_initial_values = np.arange(0.1, 0.9, 0.1)
+    Omega_initial_values = np.arange(3.5, 7, 0.5)
+    t = np.arange(0, points_number * h, h)
 
-    ax1 = fig.add_subplot(gs[1, 0])
-    ax1.plot(t, A)
-    ax1.set_title(r'$A(t)$')
+    for a0 in A_initial_values:
+        for f0 in F_initial_values:
+            for omega0 in Omega_initial_values:
 
-    ax2 = fig.add_subplot(gs[2, 0])
-    ax2.plot(t, M)
-    ax2.set_title(r'$M(t)$')
+                A, F, L, Omega = get_results(points_number, h, a0, f0, omega0, t)
 
-    ax3 = fig.add_subplot(gs[3, 0])
-    ax3.plot(t, L/F)
-    ax3.set_title(r'$E(t)$')
-    plt.show()
+                M = (1-F)*A/2
+
+                fig = plt.figure(figsize=(7, 9))
+                gs = gridspec.GridSpec(nrows=4, ncols=1)
+                ax0 = fig.add_subplot(gs[0, 0])
+                ax0.plot(t, Omega)
+                ax0.set_title(r'$\Omega (t)$')
+
+                ax1 = fig.add_subplot(gs[1, 0])
+                ax1.plot(t, A)
+                ax1.set_title(r'$A(t)$')
+
+                ax2 = fig.add_subplot(gs[2, 0])
+                ax2.plot(t, M)
+                ax2.set_title(r'$M(t)$')
+
+                ax3 = fig.add_subplot(gs[3, 0])
+                ax3.plot(t, L/F)
+                ax3.set_title(r'$E(t)$')
+            plt.show()
 
 
 main()

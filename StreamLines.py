@@ -1,6 +1,7 @@
 from mpl_toolkits.mplot3d import axes3d
 import matplotlib.pyplot as plt
 import numpy as np
+plt.style.use("seaborn-whitegrid")
 
 
 def derivateA(F, Omega):
@@ -51,11 +52,11 @@ fig = plt.figure()
 ax = fig.gca(projection='3d')
 
 # Make the grid
-A, F, Omega = np.meshgrid(np.arange(3.5, 6.5, 0.1),
-                      np.arange(0, 1, 0.2),
-                      np.arange(-0.8, 0, 0.2))
-L = 0
-t = 0
+A, F, Omega = np.meshgrid(np.arange(3.5, 6.5, 0.5),
+                      np.arange(0.2, 0.8, 0.05),
+                      np.arange(-0.9, -0.7, 0.01))
+t = 20
+L=Gaussian(t)
 
 # Make the direction data for the arrows
 a = derivateA(F, Omega)
@@ -67,8 +68,8 @@ speed = np.sqrt(np.abs(a) + np.abs(f) + np.abs(o))
 
 # Set linewidth
 lw = speed / speed.max()
+ax.quiver3D(A, F, Omega, a, f, o, linewidth= 0.3, cmap="Blues")
 
-ax.quiver(A, F, Omega, a, f, o, length=0.1, linewidth=0.2)
 ax.set_xlabel('A')
 ax.set_ylabel('F')
 ax.set_zlabel('Omega')

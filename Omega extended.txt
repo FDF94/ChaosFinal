@@ -1,0 +1,22 @@
+def derivateOmega(t, A, F, L, Omega):
+
+    dAdt = derivateA(F, Omega)
+    dFdt = derivateF(A, F, L, Omega)
+    dLdt = derivateL(t)
+    Alpha = 1-F
+    Psi = ((3 * Omega**2 + 1) * Alpha + 2*L*(1+Omega)/F)
+
+    common_factor = 2/(3*F*Alpha)
+    term1_factor1 = (3*(L + 3*(Alpha)*dAdt/2)/(A*F) + dFdt - dAdt*Psi)
+    term1_factor2 = (L + 3*Alpha * dAdt / 2)
+    term2 = 6*L*dAdt/A
+    term3 = 6 * Alpha * dAdt**2 / A
+    term4 = dLdt
+    term5 = 3 * Alpha * dFdt * Omega
+    term6 = F**2 * (Psi - Alpha) / A**2
+
+    return ((3*(3*(1-F)*F*O/2)/(A*F)+((1-F)*F*O/A)-F*O*((3*O^2+1)*(1-F)/F))*(3*(1-F)*F*O/2)+6*(1-F)*F*O^2/A-3*(1-F)*((1-F)*F*O/A)*O-F^2*(((3*O^2+1)*(1-F)/F)-(1-F))/A^2)*2/(3*F*(1-F))
+
+def derivateF(A, F, L, Omega):
+    result = (1-F)*F*Omega/A
+((3*(3*(1-y)*y*z/2)/(x*y)+((1-y)*y*z/x)-y*z*((3*z^2+1)*(1-y)/y))*(3*(1-y)*y*z/2)+6*(1-y)*y*z^2/x-3*(1-y)*((1-y)*y*z/x)*z-y^2*(((3*z^2+1)*(1-y)/y)-(1-y))/x^2)*2/(3*y*(1-y))

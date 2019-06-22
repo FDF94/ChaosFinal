@@ -54,21 +54,22 @@ ax = fig.gca(projection='3d')
 # Make the grid
 A, F, Omega = np.meshgrid(np.arange(3.5, 6.5, 0.5),
                       np.arange(0.2, 0.8, 0.05),
-                      np.arange(-0.9, -0.7, 0.01))
-t = 20
+                      np.arange(-0.05, 0.06, 0.008))
+t = 0
 L=Gaussian(t)
 
 # Make the direction data for the arrows
-a = derivateA(F, Omega)
-f = derivateF(A, F, np.zeros_like(Omega), Omega)
-o = derivateOmega(t, A, F, L, Omega)
+a = derivateA(F, Omega)*2
+f = derivateF(A, F, np.zeros_like(Omega), Omega)*2
+o = derivateOmega(t, A, F, L, Omega)*2
 
 # Set speed metric
 speed = np.sqrt(np.abs(a) + np.abs(f) + np.abs(o))
 
 # Set linewidth
 lw = speed / speed.max()
-ax.quiver3D(A, F, Omega, a, f, o, linewidth= 0.3, cmap="Blues")
+ax.quiver3D(A, F, Omega, a, f, o, linewidth= 0.4, 
+    cmap="Blues", pivot="middle")
 
 ax.set_xlabel('A')
 ax.set_ylabel('F')

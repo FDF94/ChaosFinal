@@ -108,44 +108,35 @@ def main():
     points_number = 10000
     h = 0.01  # step size
 
-    A_initial_values = np.arange(3.5, 7, 0.5)
-    F_initial_values = np.arange(0.4, 0.9, 0.1)
-    Omega_initial_values = np.arange(-0.3, 0.3, 0.1)
+    a0 = 5
+    f0 = 0.5
+    omega0 = -0.5
     t = np.arange(0, points_number * h, h)
 
-    for a0 in A_initial_values:
-        for f0 in F_initial_values:
-            for omega0 in Omega_initial_values:
+    A, F, L, Omega = get_results(points_number, h, a0, f0, omega0, t)
 
-                A, F, L, Omega = get_results(points_number, h, a0, f0, omega0, t)
+    M = (1-F)*A/2
 
-                # M = (1-F)*A/2
-                plt.plot(t, Omega)
+    fig = plt.figure(figsize=(7, 9))
+    gs = gridspec.GridSpec(nrows=4, ncols=1)
 
-                # fig = plt.figure(figsize=(7, 9))
-                # gs = gridspec.GridSpec(nrows=4, ncols=1)
+    ax0 = fig.add_subplot(gs[0, 0])
+    ax0.plot(t, Omega)
+    ax0.set_title(r'$\Omega (t)$')
 
-                # ax0 = fig.add_subplot(gs[0, 0])
-                # ax0.plot(t, Omega)
-                # ax0.set_title(r'$\Omega (t)$')
+    ax1 = fig.add_subplot(gs[1, 0])
+    ax1.plot(t, A)
+    ax1.set_title(r'$A(t)$')
 
-                # ax1 = fig.add_subplot(gs[1, 0])
-                # ax1.plot(t, A)
-                # ax1.set_title(r'$A(t)$')
+    ax2 = fig.add_subplot(gs[2, 0])
+    ax2.plot(t, M)
+    ax2.set_title(r'$M(t)$')
 
-                # ax2 = fig.add_subplot(gs[2, 0])
-                # ax2.plot(t, M)
-                # ax2.set_title(r'$M(t)$')
+    ax3 = fig.add_subplot(gs[3, 0])
+    ax3.plot(t, L/F)
+    ax3.set_title(r'$E(t)$')
 
-                # ax3 = fig.add_subplot(gs[3, 0])
-                # ax3.plot(t, L/F)
-                # ax3.set_title(r'$E(t)$')
-            plt.title(r"$\Omega$; A(0)=" + str(np.around(a0, decimals=1)) 
-                + r"; F(0)=" + str(np.around(f0, decimals=1)))    
-            plt.savefig("$omega-a0_" + str(np.around(a0, decimals=1)) 
-                + "-f0_" + str(np.around(f0, decimals=1)) + ".png")
-            # plt.show()
-            plt.clf()
+    plt.show()
 
 
 main()

@@ -122,24 +122,6 @@ def main():
                 # M = (1-F)*A/2
                 plt.plot(t, Omega)
 
-                # fig = plt.figure(figsize=(7, 9))
-                # gs = gridspec.GridSpec(nrows=4, ncols=1)
-
-                # ax0 = fig.add_subplot(gs[0, 0])
-                # ax0.plot(t, Omega)
-                # ax0.set_title(r'$\Omega (t)$')
-
-                # ax1 = fig.add_subplot(gs[1, 0])
-                # ax1.plot(t, A)
-                # ax1.set_title(r'$A(t)$')
-
-                # ax2 = fig.add_subplot(gs[2, 0])
-                # ax2.plot(t, M)
-                # ax2.set_title(r'$M(t)$')
-
-                # ax3 = fig.add_subplot(gs[3, 0])
-                # ax3.plot(t, L/F)
-                # ax3.set_title(r'$E(t)$')
             plt.title(r"$\Omega$; A(0)=" + str(np.around(a0, decimals=1)) 
                 + r"; F(0)=" + str(np.around(f0, decimals=1)))    
             plt.savefig("$omega-a0_" + str(np.around(a0, decimals=1)) 

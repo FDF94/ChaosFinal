@@ -1,11 +1,30 @@
-# Matemática
+# Math
 import numpy as np
 from scipy import constants as sc
-# Gráficos
+# Graphics
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 plt.style.use("seaborn-whitegrid")
+# System
+import argparse
 
+def restricted_F(x):
+    y=float(x)
+    if y <= 0.0 or y >= 1.0:
+        raise argparse.ArgumentTypeError("%r not in range (0.0, 1.0)"%(y,))
+    return y
+
+def restricted_Omega(x):
+    y=float(x)
+    if y <= -1.0 or y >= 1.0:
+        raise argparse.ArgumentTypeError("%r not in range (-1.0, 1.0)"%(y,))
+    return y
+
+def restricted_A(x):
+    y=float(x)
+    if y <= 0.0:
+        raise argparse.ArgumentTypeError("%r not positive"%(y,))
+    return y
 
 def derivateA(F, Omega):
     return F*Omega
@@ -39,14 +58,14 @@ def derivateOmega(t, A, F, L, Omega):
 
 
 def derivateL(t):
-    L0 = 0.01
+    L0 = 0.05
     sigma = 1
     t0 = 20
     return -L0*(t - t0)*np.exp(-((t - t0)**2)/(2*sigma**2))/(np.sqrt(2*np.pi)*sigma**(5/2))
 
 
 def Gaussian(t):
-    L0 = 0.01
+    L0 = 0.05
     sigma = 1
     t0 = 20
     return L0*np.exp(-((t - t0)**2)/(2*sigma**2))/(np.sqrt(2*np.pi*sigma))
@@ -103,14 +122,13 @@ def get_results(points_number, h, a0, f0, omega0, t):
         
         return A, F, L, Omega
 
-def main():
+
+def main(a0, f0, omega0):
+
     # Initialize hyperparameters
     points_number = 10000
     h = 0.01  # step size
 
-    a0 = 5
-    f0 = 0.5
-    omega0 = -0.5
     t = np.arange(0, points_number * h, h)
 
     A, F, L, Omega = get_results(points_number, h, a0, f0, omega0, t)
@@ -139,4 +157,12 @@ def main():
     plt.show()
 
 
-main()
+parser = argparse.ArgumentParser()
+parser.add_argument("-A", "--a0", default=5,
+                    help="Starting value for A(t)", type=restricted_A)
+parser.add_argument("-F", "--f0", default=0.5,
+                    help="Starting value for F(t)", type=restricted_F)
+parser.add_argument("-O", "--omega0", default=0,
+                    help="Starting value for Omega(t)", type=restricted_Omega)                    
+args = parser.parse_args()
+main(args.a0, args.f0, args.omega0)

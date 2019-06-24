@@ -123,15 +123,11 @@ def get_results(points_number, h, a0, f0, omega0, t):
         return A, F, L, Omega
 
 
-def main(a0, f0, omega0):
+def main(a0, f0, omega0, points_number, step_size):
 
-    # Initialize hyperparameters
-    points_number = 10000
-    h = 0.01  # step size
+    t = np.arange(0, points_number * step_size, step_size)
 
-    t = np.arange(0, points_number * h, h)
-
-    A, F, L, Omega = get_results(points_number, h, a0, f0, omega0, t)
+    A, F, L, Omega = get_results(points_number, step_size, a0, f0, omega0, t)
 
     M = (1-F)*A/2
 
@@ -163,6 +159,10 @@ parser.add_argument("-A", "--a0", default=5,
 parser.add_argument("-F", "--f0", default=0.5,
                     help="Starting value for F(t)", type=restricted_F)
 parser.add_argument("-O", "--omega0", default=0,
-                    help="Starting value for Omega(t)", type=restricted_Omega)                    
+                    help="Starting value for Omega(t)", type=restricted_Omega)
+parser.add_argument("-s", "--step_size", default=0.01,
+                    help="Step size for calculus", type=restricted_A)
+parser.add_argument("-pn", "--points_number", default=10000,
+                    help="Number of points to calculate", type=restricted_A)                                                                            
 args = parser.parse_args()
-main(args.a0, args.f0, args.omega0)
+main(args.a0, args.f0, args.omega0, args.points_number, args.step_size)

@@ -1,6 +1,6 @@
 # Matemática
 import numpy as np
-from functions import *
+from functions import get_results
 from variable_types import positive_float
 # Gráficos
 import matplotlib.pyplot as plt

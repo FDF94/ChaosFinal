@@ -12,7 +12,7 @@ import argparse
 def Bulk(t0, L0, sigma, points_number, step_size):
     A_initial_values = np.arange(3.5, 7, 0.5)
     F_initial_values = np.arange(0.1, 0.9, 0.1)
-    Omega_initial_values = np.arange(-0.3, 0.3, 0.1)
+    Omega_initial_values = np.arange(-0.4, 0.5, 0.1)
     t = np.arange(0, points_number * step_size, step_size)
 
     for a0 in A_initial_values:

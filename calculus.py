@@ -12,6 +12,12 @@ import argparse
 def main(a0, f0, omega0, t0, L0, sigma, points_number, step_size):
 
     t = np.arange(0, points_number * step_size, step_size)
+    
+    if(a0 != 4):
+        f0 = 1 - 2/a0
+    elif(f0 != 0.5):
+        a0 = 2/(1-f0)
+
     try:
         A, F, L, Omega = get_results(points_number, step_size, a0, f0, omega0, t, t0, L0, sigma)
         M = (1-F)*A/2
@@ -41,9 +47,10 @@ def main(a0, f0, omega0, t0, L0, sigma, points_number, step_size):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-A", "--a0", default=5,
+group = parser.add_mutually_exclusive_group()
+group.add_argument("-A", "--a0", default=4,
                     help="Starting value for A(t)", type=positive_float)
-parser.add_argument("-F", "--f0", default=0.5,
+group.add_argument("-F", "--f0", default=0.5,
                     help="Starting value for F(t)", type=restricted_F)
 parser.add_argument("-O", "--omega0", default=0,
                     help="Starting value for Omega(t)", type=restricted_Omega)
